@@ -1,0 +1,28 @@
+/* AdminLogin.css */
+.animation-background {
+    animation: background-animation 1s forwards;
+}
+
+.animation-form {
+    animation: form-animation 1s forwards;
+}
+
+@keyframes background-animation {
+    0% {
+        background: linear-gradient(to right, purple, pink, red);
+    }
+
+    100% {
+        background: linear-gradient(to right, green, blue, cyan);
+    }
+}
+
+@keyframes form-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
