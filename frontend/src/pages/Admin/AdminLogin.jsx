@@ -30,6 +30,7 @@ const AdminLogin = () => {
         withCredentials: true,
       });
       setMessage("Login successful");
+      setFormData({ email: "", password: "" });
       setIsAnimating(true);
       setTimeout(() => {
         navigate("/admin-dashboard");

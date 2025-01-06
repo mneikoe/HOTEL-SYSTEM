@@ -7,6 +7,7 @@ import ReceptionistLogin from "./pages/Receptionist/ReceptionistLogin";
 import HomePage from "./pages/Home";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import BookingDashboard from "./pages/BookingDashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/manager-login" element={<ManagerLogin />} />
+      <Route path="/booking-dashboard" element={<BookingDashboard />} />
       <Route path="/receptionist-login" element={<ReceptionistLogin />} />
     </Routes>
   );

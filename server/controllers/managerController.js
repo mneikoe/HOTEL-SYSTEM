@@ -5,47 +5,41 @@ require("dotenv").config();
 
 // Register Manager
 exports.registerManager = async (req, res) => {
-  const { name, email, password } = req.body;
-
+  const { name, email, dateOfJoining } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newManager = new Manager({ name, email, password: hashedPassword });
+    const newManager = new Manager({
+      name,
+      email,
+
+      dateOfJoining: new Date(dateOfJoining), // Ensure the date is correctly parsed
+    });
     await newManager.save();
-
-    const token = newManager.generateAuthToken();
-
-    res.status(201).json({ newManager, token });
     res.status(201).json({
       message: "Manager registered successfully",
       id: newManager._id,
       createdAt: newManager.createdAt,
+      dateOfJoining: newManager.dateOfJoining,
     });
   } catch (error) {
+    console.error("Error registering manager:", error); // Log detailed error
     res.status(500).json({ error: "Error registering manager" });
   }
 };
-
 // Login Manager
 exports.loginManager = async (req, res) => {
-  const { id, password } = req.body;
+  const { id, name } = req.body;
   try {
-    const manager = await Manager.findById(id).select("+password");
-    if (!manager) {
-      return res.status(401).json({ message: "Invalid ID or password" });
-    }
-    const isMatch = await manager.comparePassword(password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid ID or password" });
+    const manager = await Manager.findById(id);
+    if (!manager || manager.name !== name) {
+      return res.status(401).json({ message: "Invalid ID or name" });
     }
     const token = manager.generateAuthToken();
     res.cookie("token", token, { httpOnly: true, secure: false });
-    res.status(200).json({ token, user: manager });
-    res.status(200).json({
-      message: "Login successful",
-    });
+    return res.status(200).json({ token, user: manager });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 // Get Managers
@@ -74,20 +68,23 @@ exports.getManagerById = async (req, res) => {
 
 // Update Manager
 exports.updateManager = async (req, res) => {
-  const { name, email, password } = req.body;
-
+  const { name, email, password, dateOfJoining } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const updatedManager = await Manager.findByIdAndUpdate(
       req.params.id,
-      { name, email, password: hashedPassword },
+      { name, email, password: hashedPassword, dateOfJoining },
       { new: true }
     );
-
     if (!updatedManager) {
       return res.status(404).json({ error: "Manager not found" });
     }
-    res.json({ message: "Manager updated successfully", updatedManager });
+    updatedManager.updatedAt = new Date(); // Manually update the updatedAt timestamp
+    res.json({
+      message: "Manager updated successfully",
+      updatedAt: updatedManager.updatedAt,
+      dateOfJoining: updatedManager.dateOfJoining,
+    });
   } catch (error) {
     res.status(500).json({ error: "Error updating manager" });
   }

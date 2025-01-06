@@ -1,115 +1,114 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Home.css";
 
-// Home Component
 const Home = () => {
   const [roomData, setRoomData] = useState([]);
   const navigate = useNavigate();
 
-  /*useEffect(() => {
+  useEffect(() => {
+    const fetchRoomData = async () => {
+      try {
+        const response = await axios.get("/api/rooms");
+        setRoomData(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error("Error fetching room data:", error);
+      }
+    };
+
     fetchRoomData();
   }, []);
 
-  const fetchRoomData = async () => {
-    try {
-      const response = await axios.get("/api/rooms");
-      setRoomData(response.data);
-    } catch (error) {
-      console.error("Error fetching room data:", error);
-    }
-  };*/
-
   return (
-    <div className="bg-gray-100 flex flex-col items-center justify-center min-h-screen text-gray-800">
-      <div className="container mx-auto py-16">
-        {/* Restro and Dining Data Section */}
-        <div className="bg-blue-100 p-8 rounded-lg shadow-lg mb-8">
-          <h2 className="text-2xl font-bold text-center mb-4">
-            Restro and Dining Data
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="text-center">
-              <img
-                src="/deluxe-room.jpg"
-                alt="Deluxe Room"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <p className="mt-2 font-bold">Breakfast</p>
-            </div>
-            <div className="text-center">
-              <img
-                src="/economic-room.jpg"
-                alt="Economic Room"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <p className="mt-2 font-bold">Lunch</p>
-            </div>
-            <div className="text-center">
-              <img
-                src="/larger-than-life.jpg"
-                alt="Larger Than Life Room"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <p className="mt-2 font-bold">Dining</p>
-            </div>
-            <div className="text-center">
-              <img
-                src="/larger-life.jpg"
-                alt="Larger Life Room"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <p className="mt-2 font-bold">Club-Holic</p>
-            </div>
+    <div className="home-container">
+      {/* Restro and Dining Data Section */}
+      <section className="section bg-blue-100">
+        <h2 className="section-title">Restro and Dining Data</h2>
+        <div className="section-content">
+          <div className="inline-card" onClick={() => navigate("/breakfast")}>
+            <img
+              src="/deluxe-room.jpg"
+              alt="Deluxe Room"
+              className="card-img"
+            />
+            <p className="card-title">Breakfast</p>
+          </div>
+          <div className="inline-card" onClick={() => navigate("/lunch")}>
+            <img
+              src="/economic-room.jpg"
+              alt="Economic Room"
+              className="card-img"
+            />
+            <p className="card-title">Lunch</p>
+          </div>
+          <div className="inline-card" onClick={() => navigate("/dining")}>
+            <img
+              src="/larger-than-life.jpg"
+              alt="Larger Than Life Room"
+              className="card-img"
+            />
+            <p className="card-title">Dining</p>
+          </div>
+          <div className="inline-card" onClick={() => navigate("/club-holic")}>
+            <img
+              src="/larger-life.jpg"
+              alt="Larger Life Room"
+              className="card-img"
+            />
+            <p className="card-title">Club-Holic</p>
           </div>
         </div>
+      </section>
 
-        {/* Room Types Section */}
-        <div className="bg-purple-100 p-8 rounded-lg shadow-lg mb-8">
-          <h2 className="text-2xl font-bold text-center mb-4">
-            Rooms and Types
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {roomData.map((room) => (
-              <div key={room.id} className="text-center">
-                <img
-                  src={room.imageUrl}
-                  alt={room.type}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-                <p className="mt-2 font-bold">{room.type}</p>
+      {/* Room Types Section */}
+      <section className="section bg-purple-100">
+        <h2 className="section-title">Rooms and Types</h2>
+        <div className="section-content">
+          {roomData.length > 0 ? (
+            roomData.map((room) => (
+              <div key={room.id} className="inline-card">
+                <img src={room.imageUrl} alt={room.type} className="card-img" />
+                <p className="card-title">{room.type}</p>
               </div>
-            ))}
-          </div>
+            ))
+          ) : (
+            <p>No rooms available.</p>
+          )}
         </div>
+      </section>
 
-        {/* Admin Section */}
-        <div className="bg-yellow-100 p-8 rounded-lg shadow-lg mb-8">
-          <h3 className="text-2xl font-bold text-center mb-4">ADMIN</h3>
-          <div className="flex justify-center">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              onClick={() => navigate("/admin-login")}
-            >
-              Login as Admin
-            </button>
-          </div>
+      {/* Admin Section */}
+      <section className="section bg-yellow-100">
+        <h2 className="section-title">ADMIN</h2>
+        <div className="section-content">
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/admin-login")}
+          >
+            Login as Admin
+          </button>
         </div>
+      </section>
 
-        {/* Employee Section */}
-        <div className="bg-teal-100 p-8 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold text-center mb-4">Employee</h3>
-          <div className="flex justify-center">
-            <form className="space-x-4">
-              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
-                Login as Manager
-              </button>
-              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
-                Login as Receptionist
-              </button>
-            </form>
-          </div>
+      {/* Employee Section */}
+      <section className="section bg-teal-100">
+        <h2 className="section-title">Employee</h2>
+        <div className="section-content">
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/manager-login")}
+          >
+            Login as Manager
+          </button>
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/receptionist-login")}
+          >
+            Login as Receptionist
+          </button>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

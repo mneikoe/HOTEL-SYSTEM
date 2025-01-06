@@ -1,9 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./ManagerLogin.css"; // Ensure you import the updated CSS file
 
 const ManagerLogin = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    id: "",
+    name: "",
+  });
+  const [message, setMessage] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,57 +20,58 @@ const ManagerLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post("/api/users/login", formData);
-      navigate("/manager-dashboard");
+      await axios.post("http://localhost:7001/api/managers/login", formData, {
+        withCredentials: true,
+      });
+      setMessage("Login successful!");
+      setTimeout(() => {
+        navigate("/manager-dashboard");
+      }, 2000); // Duration of transition
     } catch (error) {
-      alert("Login failed:", error);
+      setMessage("Login failed: " + error.response?.data?.error);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white bg-opacity-70 p-8 rounded-md shadow-md w-full max-w-lg"
-    >
-      <h2 className="text-2xl font-bold mb-4">Login as Manager</h2>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="email"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-          onChange={handleChange}
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="password"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-          onChange={handleChange}
-        />
-      </div>
-      <button
-        type="submit"
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-lg shadow-md w-96"
       >
-        Login
-      </button>
-    </form>
+        <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">
+          Manager Login
+        </h2>
+        <input
+          type="text"
+          name="id"
+          onChange={handleChange}
+          placeholder="Manager ID"
+          value={formData.id}
+          className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+        />
+        <input
+          type="text"
+          name="name"
+          onChange={handleChange}
+          placeholder="Manager Name"
+          value={formData.name}
+          className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+        />
+        <button
+          type="submit"
+          className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
+        >
+          Login
+        </button>
+        {message && (
+          <div className="mt-4 p-2 bg-red-500 text-white rounded-md">
+            {message}
+          </div>
+        )}
+      </form>
+    </div>
   );
 };
 

@@ -3,8 +3,8 @@ const shortid = require("shortid");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Manager Schema Definition
-const managerSchema = new mongoose.Schema(
+// Receptionist Schema Definition
+const receptionistSchema = new mongoose.Schema(
   {
     _id: { type: String, default: shortid.generate },
     name: { type: String, required: true },
@@ -16,17 +16,17 @@ const managerSchema = new mongoose.Schema(
 );
 
 // Method to compare passwords
-managerSchema.methods.comparePassword = async function (enteredPassword) {
+receptionistSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // Method to generate JWT
-managerSchema.methods.generateAuthToken = function () {
+receptionistSchema.methods.generateAuthToken = function () {
   return jwt.sign({ email: this.email }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
 };
 
-const Manager = mongoose.model("Manager", managerSchema);
+const Receptionist = mongoose.model("Receptionist", receptionistSchema);
 
-module.exports = Manager;
+module.exports = Receptionist;

@@ -11,7 +11,7 @@ const ManagerDashboard = () => {
   });
   const [editingRoom, setEditingRoom] = useState(null);
 
-  useEffect(() => {
+  /*useEffect(() => {
     fetchRooms();
   }, []);
 
@@ -22,7 +22,7 @@ const ManagerDashboard = () => {
     } catch (error) {
       console.error("Error fetching rooms:", error);
     }
-  };
+  };*/
 
   const handleChange = (e) => {
     setNewRoom({ ...newRoom, [e.target.name]: e.target.value });

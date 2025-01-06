@@ -52,7 +52,11 @@ exports.loginAdmin = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
+// Admin Logout
+exports.logoutAdmin = (req, res) => {
+  res.cookie("token", "", { expires: new Date(0), httpOnly: true });
+  res.status(200).json({ message: "Logout successful" });
+};
 // Protected Route for testing JWT
 exports.protectedRoute = (req, res) => {
   const token = req.cookies.token;
