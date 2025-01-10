@@ -26,7 +26,9 @@ const CommonDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const roomsResponse = await axios.get("/api/rooms");
+        const roomsResponse = await axios.get(
+          "http://localhost:7001/api/rooms"
+        );
         setRooms(Array.isArray(roomsResponse.data) ? roomsResponse.data : []);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -156,12 +158,6 @@ const CommonDashboard = () => {
                   className="bg-red-600 text-white py-1 px-2 rounded hover:bg-red-800 mr-2"
                 >
                   Delete
-                </button>
-                <button
-                  onClick={() => handleRoomChange(room)}
-                  className="bg-yellow-600 text-white py-1 px-2 rounded hover:bg-yellow-800"
-                >
-                  Edit
                 </button>
               </div>
             </div>

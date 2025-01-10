@@ -23,6 +23,6 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/managers", managerRoutes);
 app.use("/api/receptionists", receptionistRoutes);
 app.use("/api/rooms", roomRoutes);
-app.use("/api/bookings", bookingRoutes);
+app.use("/api", bookingRoutes);
 
 module.exports = app;

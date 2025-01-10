@@ -24,8 +24,12 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const managersResponse = await axios.get("/api/managers");
-        const receptionistsResponse = await axios.get("/api/receptionists");
+        const managersResponse = await axios.get(
+          "http://localhost:7001/api/managers"
+        );
+        const receptionistsResponse = await axios.get(
+          "http://localhost:7001api/receptionists"
+        );
         setManagers(
           Array.isArray(managersResponse.data) ? managersResponse.data : []
         );

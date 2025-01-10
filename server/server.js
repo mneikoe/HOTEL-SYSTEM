@@ -59,7 +59,10 @@ io.on("connection", (socket) => {
     console.log("Sending bookings");
     try {
       const bookings = await Booking.find().populate("roomId");
-      io.emit("bookings", bookings);
+      const bookingsWithRoomNumbers = bookings.map((booking) => {
+        return { ...booking.toObject(), roomNumber: booking.roomNumber };
+      });
+      io.emit("bookings", bookingsWithRoomNumbers);
     } catch (error) {
       console.error("Error fetching bookings:", error);
     }
@@ -160,33 +163,23 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Booking CRUD operations
-  socket.on("createBooking", async (data) => {
-    try {
-      const newBooking = new Booking(data);
-      await newBooking.save();
-      sendBookings();
-    } catch (error) {
-      console.error("Error creating booking:", error);
-    }
-  });
-
-  socket.on("updateBooking", async (data) => {
-    try {
-      await Booking.findByIdAndUpdate(data.id, data);
-      sendBookings();
-    } catch (error) {
-      console.error("Error updating booking:", error);
-    }
-  });
-
-  socket.on("deleteBooking", async (id) => {
-    try {
-      await Booking.findByIdAndDelete(id);
-      sendBookings();
-    } catch (error) {
-      console.error("Error deleting booking:", error);
-    }
+  // Handle booking events for real-time updates
+  socket.on("bookRoom", async (data) => {
+    await emitAndSend(
+      async () => await bookingController.createBooking(data, io),
+      null,
+      async () => {
+        socket.emit("rooms", await Room.find());
+        const bookings = await Booking.find();
+        const bookingsWithRoomDetails = await Promise.all(
+          bookings.map(async (booking) => {
+            const room = await Room.findOne({ roomNumber: booking.roomNumber });
+            return { ...booking.toObject(), roomDetails: room };
+          })
+        );
+        socket.emit("bookings", bookingsWithRoomDetails);
+      }
+    );
   });
 });
 

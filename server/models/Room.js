@@ -16,6 +16,8 @@ const roomSchema = new mongoose.Schema(
       id: { type: String, required: true },
       role: { type: String, required: true }, // 'admin', 'manager', or 'receptionist'
     },
+    isBooked: { type: Boolean, default: false },
+
     imageUrl: { type: String, default: null },
   },
   { timestamps: true }
