@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
+import RoomGrid from "./RoomGrid"; // Import the RoomGrid component
 
 // Socket connection
 const socket = io("http://localhost:7001", { withCredentials: true });
@@ -111,60 +112,24 @@ const CommonDashboard = () => {
       <h2 className="text-4xl text-gray-800 mb-5 text-center">
         Common Dashboard
       </h2>
-
       <button
         onClick={handleLogout}
         className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-800 mb-3"
       >
         Logout
       </button>
-
       <button
         onClick={() => navigate("/booking-dashboard")}
         className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-800 mb-3"
       >
         Booking Dashboard
       </button>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-        {rooms.map((room) => (
-          <div
-            key={room._id}
-            id={room._id}
-            className="bg-white rounded-lg shadow-lg overflow-hidden"
-          >
-            <img
-              src={room.imageUrl}
-              alt={room.roomNumber}
-              className="w-full object-cover h-48"
-            />
-            <button
-              onClick={() => toggleDropdown(room._id)}
-              className="bg-green-600 text-white py-2 px-4 w-full hover:bg-green-800"
-            >
-              {room.roomNumber} Details
-            </button>
-            <div className="room-details p-4 flex flex-col items-start">
-              <h4 className="text-lg font-bold">{room.type}</h4>
-              <p>Room: {room.roomNumber}</p>
-              <p>Floor: {room.floorNumber}</p>
-              <p>Price: ₹{room.price}/night</p>
-              <p>
-                Created By: {room.createdBy.id} ({room.createdBy.role})
-              </p>
-              <div className="flex w-full">
-                <button
-                  onClick={() => handleRoomDelete(room._id)}
-                  className="bg-red-600 text-white py-1 px-2 rounded hover:bg-red-800 mr-2"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
+      <RoomGrid
+        rooms={rooms}
+        handleRoomDelete={handleRoomDelete}
+        toggleDropdown={toggleDropdown}
+      />{" "}
+      {/* Use the RoomGrid component */}
       <div className="bg-gray-100 p-5 rounded-lg shadow-lg w-full max-w-4xl mt-5">
         <h3 className="text-2xl text-gray-800 mb-4">Room Management</h3>
         <form
