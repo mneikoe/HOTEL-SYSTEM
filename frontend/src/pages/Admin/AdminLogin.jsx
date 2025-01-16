@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./AdminLogin.css"; // Import the CSS file
 
 // Admin Login Component
 const AdminLogin = () => {
@@ -42,49 +41,53 @@ const AdminLogin = () => {
 
   return (
     <div
-      className={`flex justify-center items-center min-h-screen ${
-        isAnimating
-          ? "animation-background"
-          : "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
-      }`}
+      className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')`,
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      <form
-        onSubmit={handleSubmit}
-        className={`bg-white p-8 rounded-lg shadow-md w-80 animate-fade-in ${
-          isAnimating ? "animation-form" : ""
-        }`}
-      >
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-          Admin Login
-        </h2>
-        <input
-          type="email"
-          name="email"
-          onChange={handleChange}
-          placeholder="Email"
-          value={formData.email}
-          className="w-full p-2 mb-4 text-gray-700 border rounded focus:outline-none focus:border-blue-500"
-        />
-        <input
-          type="password"
-          name="password"
-          onChange={handleChange}
-          placeholder="Password"
-          value={formData.password}
-          className="w-full p-2 mb-4 text-gray-700 border rounded focus:outline-none focus:border-blue-500"
-        />
-        <button
-          type="submit"
-          className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+      <div className="flex justify-center items-center min-h-screen">
+        <form
+          onSubmit={handleSubmit}
+          className={`backdrop-blur-md bg-white/10 rounded-3xl shadow-2xl p-10 border border-white/10 transition-transform duration-300 w-full max-w-md ${
+            isAnimating ? "animate-fade-in-up" : ""
+          }`}
         >
-          Login
-        </button>
-        {message && (
-          <div className="mt-4 p-2 bg-green-500 text-white rounded animate-bounce">
-            {message}
-          </div>
-        )}
-      </form>
+          <h2 className="text-3xl font-bold text-center mb-8 text-white">
+            Admin Login
+          </h2>
+          <input
+            type="email"
+            name="email"
+            onChange={handleChange}
+            placeholder="Email"
+            value={formData.email}
+            className="w-full p-3 mb-4 text-gray-900 border border-white/20 rounded focus:outline-none focus:border-purple-500"
+          />
+          <input
+            type="password"
+            name="password"
+            onChange={handleChange}
+            placeholder="Password"
+            value={formData.password}
+            className="w-full p-3 mb-6 text-gray-900 border border-white/20 rounded focus:outline-none focus:border-purple-500"
+          />
+          <button
+            type="submit"
+            className="w-full p-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition duration-200"
+          >
+            Login
+          </button>
+          {message && (
+            <div className="mt-4 p-3 bg-green-500 text-white rounded-xl animate-bounce">
+              {message}
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

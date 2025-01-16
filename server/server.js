@@ -5,6 +5,7 @@ const Manager = require("./models/Manager");
 const Receptionist = require("./models/Receptionist");
 const Room = require("./models/Room");
 const Booking = require("./models/Booking");
+const bookingController = require("./controllers/bookingController");
 
 const port = process.env.PORT || 7001;
 
@@ -164,22 +165,22 @@ io.on("connection", (socket) => {
   });
 
   // Handle booking events for real-time updates
-  socket.on("bookRoom", async (data) => {
-    await emitAndSend(
-      async () => await bookingController.createBooking(data, io),
-      null,
-      async () => {
-        socket.emit("rooms", await Room.find());
-        const bookings = await Booking.find();
-        const bookingsWithRoomDetails = await Promise.all(
-          bookings.map(async (booking) => {
-            const room = await Room.findOne({ roomNumber: booking.roomNumber });
-            return { ...booking.toObject(), roomDetails: room };
-          })
-        );
-        socket.emit("bookings", bookingsWithRoomDetails);
-      }
-    );
+  socket.on("newBooking", async (data) => {
+    try {
+      await bookingController.createBooking(data, io);
+      const rooms = await Room.find();
+      socket.emit("rooms", rooms);
+      const bookings = await Booking.find();
+      const bookingsWithRoomDetails = await Promise.all(
+        bookings.map(async (booking) => {
+          const room = await Room.findOne({ roomNumber: booking.roomNumber });
+          return { ...booking.toObject(), roomDetails: room };
+        })
+      );
+      io.emit("bookings", bookingsWithRoomDetails);
+    } catch (error) {
+      console.error("Error handling new booking:", error);
+    }
   });
 });
 

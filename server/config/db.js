@@ -2,7 +2,8 @@
 const mongoose = require("mongoose");
 
 //const uri = "mongodb://127.0.0.1:4000";
-const uri = "mongodb://0.0.0.0/HOTEL-SYSTEM";
+const uri =
+  "mongodb+srv://raj117557:oIOD5FtqeDSxGcik@cluster0.ny5io.mongodb.net/";
 
 function connectToDb() {
   try {

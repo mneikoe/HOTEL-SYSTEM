@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./ManagerLogin.css"; // Ensure you import the updated CSS file
 
 const ManagerLogin = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +26,7 @@ const ManagerLogin = () => {
       });
       setMessage("Login successful!");
       setTimeout(() => {
-        navigate("/manager-dashboard");
+        navigate("/common-dashboard");
       }, 2000); // Duration of transition
     } catch (error) {
       setMessage("Login failed: " + error.response?.data?.error);

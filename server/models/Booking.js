@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const shortid = require("shortid");
 
 const bookingSchema = new mongoose.Schema(
   {
+    _id: { type: String, default: shortid.generate },
     roomId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Room",
@@ -15,11 +17,22 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    checkInDate: {
+    customerPhone: {
+      type: Number,
+      required: true,
+    },
+    customerAdharId: {
+      type: String,
+      required: true,
+    },
+    customerAddress: { type: String, required: true },
+    NumberOfPeople: { type: Number, required: true },
+    checkInDateTime: {
       type: Date,
       required: true,
     },
-    checkOutDate: {
+
+    checkOutDateTime: {
       type: Date,
       required: true,
     },
@@ -31,14 +44,32 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+
     bookingStatus: {
       type: String,
-      enum: ["confirmed", "cancelled", "completed"],
+      enum: ["confirmed", "cancelled", "completed/fc", "completed/ec"],
       default: "confirmed",
     },
-    createdBy: {
-      id: { type: String, required: true },
-      role: { type: String, required: true },
+    sellingPricePerDay: {
+      type: Number,
+      required: true,
+    },
+    sellingPrice: {
+      type: Number,
+      required: true,
+    },
+    advanceAmount: {
+      type: Number,
+      required: true,
+    },
+    balanceAmount: {
+      type: Number,
+      required: true,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["paid", "unpaid", "settled"],
+      default: "unpaid",
     },
   },
   {

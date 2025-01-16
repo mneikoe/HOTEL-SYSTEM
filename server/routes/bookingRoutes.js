@@ -92,4 +92,43 @@ router.post("/bookings/:id/complete", async (req, res) => {
   }
 });
 
+router.post("/bookings/earlyCheckout/:bookingId", async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const { newCheckoutDateTime } = req.body;
+
+    const result = await bookingController.earlyCheckout(
+      bookingId,
+      newCheckoutDateTime
+    );
+    res.status(200).json({
+      success: true,
+      message: result.message,
+      booking: result.booking,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+router.post("/bookings/finalCheckout/:bookingId", async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+
+    const result = await bookingController.finalCheckout(bookingId);
+    res.status(200).json({
+      success: true,
+      message: result.message,
+      booking: result.booking,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;

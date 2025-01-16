@@ -1,39 +1,37 @@
-// RoomGrid.js
 import PropTypes from "prop-types";
 
 // Define the RoomGrid component
-const RoomGrid = ({ rooms, handleRoomDelete, toggleDropdown }) => {
+const RoomGrid = ({ rooms, handleRoomDelete }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full ">
       {rooms.map((room) => (
         <div
           key={room._id}
           id={room._id}
-          className="bg-white rounded-lg shadow-lg overflow-hidden"
+          className="group rounded-2xl overflow-hidden shadow-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
         >
-          <img
-            src={room.imageUrl}
-            alt={room.roomNumber}
-            className="w-full object-cover h-48"
-          />
-          <button
-            onClick={() => toggleDropdown(room._id)}
-            className="bg-green-600 text-white py-2 px-4 w-full hover:bg-green-800"
-          >
-            {room.roomNumber} Details
-          </button>
-          <div className="room-details p-4 flex flex-col items-start">
-            <h4 className="text-lg font-bold">{room.type}</h4>
-            <p>Room: {room.roomNumber}</p>
-            <p>Floor: {room.floorNumber}</p>
-            <p>Price: ₹{room.price}/night</p>
-            <p>
+          <div className="relative h-64 overflow-hidden">
+            <img
+              src={room.imageUrl}
+              alt={room.roomNumber}
+              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          </div>
+          <div className="p-6">
+            <h4 className="text-xl font-semibold text-white mb-2">
+              {room.type}
+            </h4>
+            <p className="text-white">Room: {room.roomNumber}</p>
+            <p className="text-white">Floor: {room.floorNumber}</p>
+            <p className="text-white">Price: ₹{room.price}/night</p>
+            <p className="text-white">
               Created By: {room.createdBy.id} ({room.createdBy.role})
             </p>
-            <div className="flex w-full">
+            <div className="flex mt-4">
               <button
                 onClick={() => handleRoomDelete(room._id)}
-                className="bg-red-600 text-white py-1 px-2 rounded hover:bg-red-800 mr-2"
+                className="bg-red-600 text-white py-1 px-3 rounded-lg shadow-lg hover:bg-red-700 transition-transform transform hover:scale-105 mr-2"
               >
                 Delete
               </button>
@@ -63,7 +61,6 @@ RoomGrid.propTypes = {
     })
   ).isRequired,
   handleRoomDelete: PropTypes.func.isRequired,
-  toggleDropdown: PropTypes.func.isRequired,
 };
 
 export default RoomGrid;

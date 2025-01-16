@@ -64,10 +64,10 @@ const CommonDashboard = () => {
 
   const handleRoomSubmit = (e) => {
     e.preventDefault();
-    const shortType = roomData.type.substring(0, 3).toUpperCase();
-    const generatedRoomNumber = `${shortType}-${roomData.roomNumber}-${roomData.floorNumber}`;
+    //const shortType = roomData.type.substring(0, 3).toUpperCase();
+    //const generatedRoomNumber = `${shortType}-${roomData.roomNumber}-${roomData.floorNumber}`;
 
-    const updatedRoomData = { ...roomData, roomNumber: generatedRoomNumber };
+    const updatedRoomData = { ...roomData, roomNumber: roomData.roomNumber };
     const endpoint = roomData.id ? "updateRoom" : "createRoom";
     socket.emit(endpoint, updatedRoomData);
     setRoomData({
@@ -108,33 +108,46 @@ const CommonDashboard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center bg-gray-200 min-h-screen p-5">
-      <h2 className="text-4xl text-gray-800 mb-5 text-center">
+    <div
+      className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-8"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')`,
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <h2 className="text-4xl font-bold text-center mb-10 text-white">
         Common Dashboard
       </h2>
-      <button
-        onClick={handleLogout}
-        className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-800 mb-3"
-      >
-        Logout
-      </button>
-      <button
-        onClick={() => navigate("/booking-dashboard")}
-        className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-800 mb-3"
-      >
-        Booking Dashboard
-      </button>
+      <div className="flex justify-between mb-8">
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        >
+          Logout
+        </button>
+        <button
+          onClick={() => navigate("/booking-dashboard")}
+          className="bg-indigo-500 text-white px-6 py-2 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        >
+          Booking Dashboard
+        </button>
+      </div>
+
       <RoomGrid
         rooms={rooms}
         handleRoomDelete={handleRoomDelete}
         toggleDropdown={toggleDropdown}
-      />{" "}
-      {/* Use the RoomGrid component */}
-      <div className="bg-gray-100 p-5 rounded-lg shadow-lg w-full max-w-4xl mt-5">
-        <h3 className="text-2xl text-gray-800 mb-4">Room Management</h3>
+      />
+
+      <div className="backdrop-blur-md bg-white/10 rounded-3xl shadow-2xl p-10 border border-white/10 transition-transform duration-300 w-full mt-20">
+        <h3 className="text-3xl font-semibold text-center mb-6 text-black">
+          Room Management
+        </h3>
         <form
           onSubmit={handleRoomSubmit}
-          className="flex flex-col items-center"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 "
         >
           <input
             type="text"
@@ -142,7 +155,7 @@ const CommonDashboard = () => {
             onChange={handleRoomChange}
             placeholder="Floor Number"
             value={roomData.floorNumber}
-            className="input-field py-2 px-4 mb-2 border rounded w-full"
+            className="p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
           <input
@@ -151,7 +164,7 @@ const CommonDashboard = () => {
             onChange={handleRoomChange}
             placeholder="Room Number"
             value={roomData.roomNumber}
-            className="input-field py-2 px-4 mb-2 border rounded w-full"
+            className="p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
           <input
@@ -160,7 +173,7 @@ const CommonDashboard = () => {
             onChange={handleRoomChange}
             placeholder="Price"
             value={roomData.price}
-            className="input-field py-2 px-4 mb-2 border rounded w-full"
+            className="p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
           <input
@@ -169,7 +182,7 @@ const CommonDashboard = () => {
             onChange={handleRoomChange}
             placeholder="Image URL"
             value={roomData.imageUrl}
-            className="input-field py-2 px-4 mb-2 border rounded w-full"
+            className="p-3 border border-gray-300 rounded-lg shadow-sm"
           />
           <input
             type="text"
@@ -177,7 +190,7 @@ const CommonDashboard = () => {
             onChange={handleRoomChange}
             placeholder="Created By ID"
             value={roomData.createdBy.id}
-            className="input-field py-2 px-4 mb-2 border rounded w-full"
+            className="p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
           <input
@@ -186,27 +199,25 @@ const CommonDashboard = () => {
             onChange={handleRoomChange}
             placeholder="Created By Role"
             value={roomData.createdBy.role}
-            className="input-field py-2 px-4 mb-2 border rounded w-full"
+            className="p-3 border border-gray-300 rounded-lg shadow-sm"
             required
           />
-          <div className="flex items-center mb-4 w-full">
-            <label className="font-bold mr-4">Type</label>
+          <div className="col-span-1 md:col-span-2 flex items-center justify-center mb-6">
             <select
               name="type"
               onChange={handleRoomChange}
               value={roomData.type}
-              className="input-field py-2 px-4 border rounded w-full"
+              className="p-3 border border-gray-300 rounded-lg shadow-sm"
               required
             >
               <option value="Economic">Economic</option>
               <option value="Deluxe">Deluxe</option>
               <option value="Super Deluxe">Super Deluxe</option>
-              <option value="Larger than Life">Larger than Life</option>
             </select>
           </div>
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-800 w-full"
+            className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg w-full md:col-span-2 transition-transform transform hover:scale-105"
           >
             {roomData.id ? "Update" : "Add"}
           </button>
