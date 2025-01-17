@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -28,9 +29,9 @@ const ReceptionistLogin = () => {
         }
       );
       setMessage("Login successful!");
-      setTimeout(() => {
-        navigate("/common-dashboard");
-      }, 2000); // Duration of transition
+
+      navigate("/common-dashboard");
+      // Duration of transition
     } catch (error) {
       setMessage("Login failed: " + error.response?.data?.error);
     }

@@ -1,9 +1,8 @@
 // db.js
+require("dotenv").config();
 const mongoose = require("mongoose");
 
-//const uri = "mongodb://127.0.0.1:4000";
-const uri =
-  "mongodb+srv://raj117557:oIOD5FtqeDSxGcik@cluster0.ny5io.mongodb.net/";
+const uri = process.env.DB_URL;
 
 function connectToDb() {
   try {

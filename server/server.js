@@ -7,7 +7,7 @@ const Room = require("./models/Room");
 const Booking = require("./models/Booking");
 const bookingController = require("./controllers/bookingController");
 
-const port = process.env.PORT || 7001;
+const PORT = process.env.PORT || 7001;
 
 const server = http.createServer(app);
 
@@ -184,6 +184,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+server.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
