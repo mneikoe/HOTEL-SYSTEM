@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const ManagerLogin = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const ManagerLogin = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:7001/api/managers/login", formData, {
+      await axios.post(`${apiUrl}/api/managers/login`, formData, {
         withCredentials: true,
       });
       setMessage("Login successful!");

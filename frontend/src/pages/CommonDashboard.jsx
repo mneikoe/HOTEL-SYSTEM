@@ -5,7 +5,9 @@ import io from "socket.io-client";
 import RoomGrid from "./RoomGrid"; // Import the RoomGrid component
 
 // Socket connection
-const socket = io("http://localhost:7001", { withCredentials: true });
+const apiUrl = import.meta.env.VITE_API_URL;
+// Initialize Socket.IO
+const socket = io(`${apiUrl}`, { withCredentials: true });
 
 const CommonDashboard = () => {
   const [rooms, setRooms] = useState([]);
@@ -27,9 +29,7 @@ const CommonDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const roomsResponse = await axios.get(
-          "http://localhost:7001/api/rooms"
-        );
+        const roomsResponse = await axios.get(`${apiUrl}/api/rooms`);
         setRooms(Array.isArray(roomsResponse.data) ? roomsResponse.data : []);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -91,7 +91,7 @@ const CommonDashboard = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:7001/api/admin/logout",
+        `${apiUrl}/api/admin/logout`,
         {},
         {
           withCredentials: true,
