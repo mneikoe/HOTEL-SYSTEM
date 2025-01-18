@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const ReceptionistLogin = () => {
   const [formData, setFormData] = useState({
@@ -21,13 +22,9 @@ const ReceptionistLogin = () => {
     e.preventDefault();
 
     try {
-      await axios.post(
-        "http://localhost:7001/api/receptionists/login",
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.post(`${apiUrl}/api/receptionists/login`, formData, {
+        withCredentials: true,
+      });
       setMessage("Login successful!");
 
       navigate("/common-dashboard");

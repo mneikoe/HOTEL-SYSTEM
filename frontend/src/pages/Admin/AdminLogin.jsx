@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Admin Login Component
 const AdminLogin = () => {
@@ -25,7 +26,7 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:7001/api/admin/login", formData, {
+      await axios.post(`${apiUrl}/api/admin/login`, formData, {
         withCredentials: true,
       });
       setMessage("Login successful");

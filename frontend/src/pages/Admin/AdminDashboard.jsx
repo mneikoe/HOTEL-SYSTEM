@@ -3,9 +3,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import PropTypes from "prop-types";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Socket connection
-const socket = io("http://localhost:7001", { withCredentials: true });
+const socket = io(`${apiUrl}`, { withCredentials: true });
 
 const AdminDashboard = () => {
   const [managers, setManagers] = useState([]);
@@ -23,11 +24,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const managersResponse = await axios.get(
-          "http://localhost:7001/api/managers"
-        );
+        const managersResponse = await axios.get(`${apiUrl}/api/managers`);
         const receptionistsResponse = await axios.get(
-          "http://localhost:7001/api/receptionists"
+          `${apiUrl}/api/receptionists`
         );
         setManagers(
           Array.isArray(managersResponse.data) ? managersResponse.data : []
@@ -101,7 +100,7 @@ const AdminDashboard = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:7001/api/admin/logout",
+        `${apiUrl}/api/admin/logout`,
         {},
         {
           withCredentials: true,
