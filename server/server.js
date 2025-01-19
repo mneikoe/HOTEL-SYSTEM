@@ -7,12 +7,7 @@ const Room = require("./models/Room");
 const Booking = require("./models/Booking");
 const bookingController = require("./controllers/bookingController");
 
-const availablePorts = [7001, 7002, 7003, 7007, 7008];
-const PORT =
-  process.env.PORT ||
-  availablePorts[Math.floor(Math.random() * availablePorts.length)];
-console.log(`Server running on port ${PORT}`);
-
+const port = process.env.PORT || 7000;
 const server = http.createServer(app);
 
 const allowedOrigins = [
@@ -199,7 +194,7 @@ io.on("connection", (socket) => {
     }
   });
 });
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(port, "0.0.0.0", () => {
   // Bind to all network interfaces
-  console.log(`Server is running on http://0.0.0.0:${PORT}`);
+  console.log(`Server is running on http://0.0.0.0:${port}`);
 });

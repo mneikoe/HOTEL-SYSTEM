@@ -10,7 +10,6 @@ const receptionistRoutes = require("./routes/receptionistRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 
-//const connectDB = require("./config/db");
 const connectToDb = require("./config/db");
 
 const app = express();
@@ -19,10 +18,19 @@ const allowedOrigins = [
   "https://kanha.atithikripa.com",
   "https://amulyashri.atithikripa.com",
 ];
+
+// Database connections based on the full subdomain URL
 const dbConnections = {
-  "https://indiga.atithikripa.com": process.env.DB_URL_INDIGA,
-  "https://kanha.atithikripa.com": process.env.DB_URL_KANHA,
-  "https://amulyashri.atithikripa.com": process.env.DB_URL_AMULYASHRI,
+  "indiga.atithikripa.com": process.env.DB_URL_INDIGA,
+  "kanha.atithikripa.com": process.env.DB_URL_KANHA,
+  "amulyashri.atithikripa.com": process.env.DB_URL_AMULYASHRI,
+};
+
+// Ports for each subdomain
+const subdomainPorts = {
+  "indiga.atithikripa.com": 7001,
+  "kanha.atithikripa.com": 7002,
+  "amulyashri.atithikripa.com": 7003,
 };
 
 app.use(
@@ -41,11 +49,10 @@ app.use(
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-//connectDB();
 // Middleware to connect to the correct database based on the full subdomain URL
 app.use(async (req, res, next) => {
   try {
-    const fullUrl = req.headers.host; // Example: "indiga.atithikripa.com"
+    const fullUrl = req.headers.host; // Full URL, e.g., "indiga.atithikripa.com"
 
     // Check if the full URL exists in the dbConnections map
     const uri = dbConnections[fullUrl];
@@ -62,13 +69,18 @@ app.use(async (req, res, next) => {
     res.status(500).send("Database connection error");
   }
 });
+
+// Routing
 app.use("/api/admin", adminRoutes);
 app.use("/api/managers", managerRoutes);
 app.use("/api/receptionists", receptionistRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api", bookingRoutes);
+
+// Root endpoint
 app.get("/", (req, res) => {
   res.send("Welcome to the Backend API");
 });
 
+// Export app for use in server.js
 module.exports = app;
