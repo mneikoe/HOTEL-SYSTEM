@@ -26,7 +26,7 @@ app.use("/api/receptionists", receptionistRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api", bookingRoutes);
 app.get("/", (req, res) => {
-  res.send("Welcome to the Backend API");
+  res.send("Socket IO backend is running");
 });
 
 module.exports = app;

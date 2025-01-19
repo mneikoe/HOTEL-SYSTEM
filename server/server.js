@@ -13,8 +13,8 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: "https://indiga.atithikripa.com",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: "https://indiga.atithikripa.com", // Update this to match your frontend URL
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
