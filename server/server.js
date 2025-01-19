@@ -13,13 +13,8 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-<<<<<<< HEAD
-    origin: "https://indiga.atithikripa.com", // Update this to match your frontend URL
-    methods: ["GET", "POST"],
-=======
     origin: "https://indiga.atithikripa.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
->>>>>>> parent of ba7152a (three subdomains configuration)
     credentials: true,
   },
 });
@@ -188,6 +183,7 @@ io.on("connection", (socket) => {
     }
   });
 });
-app.listen(PORT, '0.0.0.0', () => {  // Bind to all network interfaces
+app.listen(PORT, "0.0.0.0", () => {
+  // Bind to all network interfaces
   console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });

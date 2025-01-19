@@ -25,13 +25,8 @@ app.use("/api/managers", managerRoutes);
 app.use("/api/receptionists", receptionistRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api", bookingRoutes);
-<<<<<<< HEAD
 app.get("/", (req, res) => {
-  res.send("Socket IO backend is running");
-=======
-app.get('/', (req, res) => {
-    res.send('Welcome to the Backend API');
->>>>>>> parent of ba7152a (three subdomains configuration)
+  res.send("Welcome to the Backend API");
 });
 
 module.exports = app;
