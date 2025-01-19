@@ -35,12 +35,8 @@ exports.loginManager = async (req, res) => {
       return res.status(401).json({ message: "Invalid ID or name" });
     }
     const token = manager.generateAuthToken();
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Only set secure cookies in production
-      sameSite: "None", // For cross-origin requests
-      maxAge: 3600000, // 1 hour expiration
-    });
+    res.cookie("token", token, { httpOnly: true, secure: false });
+
     return res.status(200).json({ token, user: manager });
   } catch (error) {
     console.error("Login error:", error);
