@@ -37,8 +37,12 @@ exports.loginReceptionist = async (req, res) => {
       return res.status(401).json({ message: "Invalid ID or name" });
     }
     const token = receptionist.generateAuthToken();
-    res.cookie("token", token, { httpOnly: true, secure: false });
-
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Only send cookie over HTTPS in production
+      sameSite: "None", // Allow cross-site cookie sending (necessary for cross-domain requests)
+      maxAge: 3600000,
+    });
     return res.status(200).json({ token, user: receptionist });
   } catch (error) {
     console.error("Login error:", error);

@@ -45,8 +45,12 @@ exports.loginAdmin = async (req, res) => {
     const token = jwt.sign({ email: admin.email }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("token", token, { httpOnly: true, secure: false });
-
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Only set secure cookies in production
+      sameSite: "None", // For cross-origin requests
+      maxAge: 3600000, // 1 hour expiration
+    });
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.error("Error during login:", error);
