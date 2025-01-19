@@ -7,24 +7,13 @@ const Room = require("./models/Room");
 const Booking = require("./models/Booking");
 const bookingController = require("./controllers/bookingController");
 
-const port = process.env.PORT || 7000;
-const server = http.createServer(app);
+const PORT = process.env.PORT || 7001;
 
-const allowedOrigins = [
-  "https://indiga.atithikripa.com",
-  "https://kanha.atithikripa.com",
-  "https://amulyashri.atithikripa.com",
-];
+const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "https://indiga.atithikripa.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
@@ -194,7 +183,7 @@ io.on("connection", (socket) => {
     }
   });
 });
-app.listen(port, "0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", () => {
   // Bind to all network interfaces
-  console.log(`Server is running on http://0.0.0.0:${port}`);
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });

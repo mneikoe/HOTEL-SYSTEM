@@ -1,25 +1,14 @@
-const dotenv = require("dotenv");
+require("dotenv").config();
 const mongoose = require("mongoose");
-dotenv.config();
 
-// Mapping of exact subdomain URLs to database connections
-/*const dbConnections = {
-  "indiga.atithikripa.com": process.env.DB_URL_INDIGA, // Exact URL for "indiga"
-  "kanha.atithikripa.com": process.env.DB_URL_KANHA, // Exact URL for "kanha"
-  "amulyashri.atithikripa.com": process.env.DB_URL_AMULYASHRI, // Exact URL for "amulyashri"
-};*/
+const uri = process.env.DB_URL;
 
-async function connectToDb(uri) {
+function connectToDb() {
   try {
-    if (!mongoose.connections.some((conn) => conn.readyState)) {
-      await mongoose.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
-      console.log(`Connected successfully to database: ${uri}`);
-    }
+    mongoose.connect(uri);
+    console.log("Connected successfully to database");
   } catch (err) {
-    console.error("Connection failed", err);
+    console.error("Connection to database failed", err);
     throw err;
   }
 }
