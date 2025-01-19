@@ -4,12 +4,21 @@ const mongoose = require("mongoose");
 // Mapping of subdomains to database URLs
 const dbConnections = {
   indiga: process.env.DB_URL_INDIGA, // Database URL for "indiga"
-  kanha: process.env.DB_URL_KANHA,
-  amulyashri: process.env.DB_URL_AMULYASHRI, // Database URL for "kanha"
+  kanha: process.env.DB_URL_KANHA, // Database URL for "kanha"
+  amulyashri: process.env.DB_URL_AMULYASHRI, // Database URL for "amulyashri"
 };
 
-async function connectToDb(subdomain) {
+async function connectToDb(req) {
   try {
+    // Extract subdomain from request headers (e.g., "indiga" from "indiga.atithikripa.com")
+    const host = req.headers.host; // Get the full host (subdomain.domain.com)
+    const subdomain = host.split(".")[0]; // Extract the subdomain part
+
+    // If the subdomain is 'www', you can handle it as an error or route it to a default subdomain
+    if (subdomain === "www") {
+      throw new Error("No valid subdomain found.");
+    }
+
     const uri = dbConnections[subdomain];
 
     if (!uri) {
@@ -24,10 +33,7 @@ async function connectToDb(subdomain) {
       );
     }
   } catch (err) {
-    console.error(
-      `Connection to database for subdomain ${subdomain} failed`,
-      err
-    );
+    console.error(`Connection to database for subdomain failed:`, err);
     throw err;
   }
 }
