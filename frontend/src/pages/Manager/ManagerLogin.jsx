@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const apiUrl = import.meta.env.VITE_API_URL;
 
 const ManagerLogin = () => {
   const [formData, setFormData] = useState({
@@ -22,9 +21,13 @@ const ManagerLogin = () => {
     e.preventDefault();
 
     try {
-      await axios.post(`${apiUrl}/api/managers/login`, formData, {
-        withCredentials: true,
-      });
+      await axios.post(
+        "https://www.indigaapi.atithikripa.com/api/managers/login",
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
       setMessage("Login successful!");
       setTimeout(() => {
         navigate("/common-dashboard");

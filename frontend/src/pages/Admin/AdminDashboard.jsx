@@ -3,10 +3,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import PropTypes from "prop-types";
-const apiUrl = import.meta.env.VITE_API_URL;
 
 // Socket connection
-const socket = io(`${apiUrl}`, { withCredentials: true });
+const socket = io("https://www.indigaapi.atithikripa.com", {
+  withCredentials: true,
+});
 
 const AdminDashboard = () => {
   const [managers, setManagers] = useState([]);
@@ -24,9 +25,11 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const managersResponse = await axios.get(`${apiUrl}/api/managers`);
+        const managersResponse = await axios.get(
+          "https://www.indigaapi.atithikripa.com/api/managers"
+        );
         const receptionistsResponse = await axios.get(
-          `${apiUrl}/api/receptionists`
+          "https://www.indigaapi.atithikripa.com/api/receptionists"
         );
         setManagers(
           Array.isArray(managersResponse.data) ? managersResponse.data : []
@@ -100,7 +103,7 @@ const AdminDashboard = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        `${apiUrl}/api/admin/logout`,
+        "https://www.indigaapi.atithikripa.com/api/admin/logout",
         {},
         {
           withCredentials: true,

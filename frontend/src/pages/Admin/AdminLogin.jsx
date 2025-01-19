@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const apiUrl = import.meta.env.VITE_API_URL;
 
 // Admin Login Component
 const AdminLogin = () => {
@@ -26,9 +25,13 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      await axios.post(`${apiUrl}/api/admin/login`, formData, {
-        withCredentials: true,
-      });
+      await axios.post(
+        "https://www.indigaapi.atithikripa.com/api/admin/login",
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
       setMessage("Login successful");
       setFormData({ email: "", password: "" });
       setIsAnimating(true);

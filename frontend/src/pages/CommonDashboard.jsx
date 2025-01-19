@@ -29,7 +29,9 @@ const CommonDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const roomsResponse = await axios.get(`${apiUrl}/api/rooms`);
+        const roomsResponse = await axios.get(
+          "https://www.indigaapi.atithikripa.com/api/rooms"
+        );
         setRooms(Array.isArray(roomsResponse.data) ? roomsResponse.data : []);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -91,7 +93,7 @@ const CommonDashboard = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        `${apiUrl}/api/admin/logout`,
+        "https://www.indigaapi.atithikripa.com/api/admin/logout",
         {},
         {
           withCredentials: true,

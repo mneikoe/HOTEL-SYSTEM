@@ -7,9 +7,10 @@ import { ArrowLeft } from "lucide-react";
 import { parse } from "date-fns"; // Using date-fns for date handling
 import { DownloadTableExcel } from "react-export-table-to-excel";
 
-const apiUrl = import.meta.env.VITE_API_URL;
 // Initialize Socket.IO
-const socket = io(`${apiUrl}`, { withCredentials: true });
+const socket = io("https://www.indigaapi.atithikripa.com", {
+  withCredentials: true,
+});
 
 const BookingDashboard = () => {
   const [rooms, setRooms] = useState([]);
@@ -64,7 +65,9 @@ const BookingDashboard = () => {
   // **Fetch Room Data**
   const fetchRooms = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/rooms`);
+      const response = await axios.get(
+        "https://www.indigaapi.atithikripa.com/api/rooms"
+      );
       if (response.data.success) setRooms(response.data.rooms);
     } catch (error) {
       console.error("Failed to fetch rooms:", error);
@@ -75,7 +78,9 @@ const BookingDashboard = () => {
   // **Fetch Booking Data**
   const fetchBookings = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/bookings`);
+      const response = await axios.get(
+        "https://www.indigaapi.atithikripa.com/api/bookings"
+      );
       if (response.data.success) setBookings(response.data.bookings);
     } catch (error) {
       console.error("Failed to fetch bookings:", error);
@@ -157,23 +162,26 @@ const BookingDashboard = () => {
       balanceAmount();
       sellingPrice();
 
-      const response = await axios.post(`${apiUrl}/api/bookings`, {
-        roomNumber: selectedRoom.roomNumber,
-        customerName: bookingForm.customerName,
-        customerPhone: bookingForm.customerPhone,
-        customerAdharId: bookingForm.customerAdharId,
-        customerAddress: bookingForm.customerAddress,
-        NumberOfPeople: bookingForm.NumberOfPeople,
-        checkInDateTime: bookingForm.checkInDateTime,
-        checkOutDateTime: bookingForm.checkOutDateTime,
-        advanceAmount: bookingForm.advanceAmount,
-        sellingPricePerDay: bookingForm.sellingPricePerDay,
+      const response = await axios.post(
+        "https://www.indigaapi.atithikripa.com/api/bookings",
+        {
+          roomNumber: selectedRoom.roomNumber,
+          customerName: bookingForm.customerName,
+          customerPhone: bookingForm.customerPhone,
+          customerAdharId: bookingForm.customerAdharId,
+          customerAddress: bookingForm.customerAddress,
+          NumberOfPeople: bookingForm.NumberOfPeople,
+          checkInDateTime: bookingForm.checkInDateTime,
+          checkOutDateTime: bookingForm.checkOutDateTime,
+          advanceAmount: bookingForm.advanceAmount,
+          sellingPricePerDay: bookingForm.sellingPricePerDay,
 
-        balanceAmount: balanceAmount,
+          balanceAmount: balanceAmount,
 
-        totalCost: totalCost,
-        sellingPrice: sellingPrice,
-      });
+          totalCost: totalCost,
+          sellingPrice: sellingPrice,
+        }
+      );
 
       if (response.data.success) {
         showNotification("success", "Booking created successfully");
@@ -222,7 +230,7 @@ const BookingDashboard = () => {
   ) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/bookings/earlyCheckout/${bookingId}`,
+        "https://www.indigaapi.atithikripa.com/api/bookings/earlyCheckout/${bookingId}",
         { newCheckoutDateTime },
         { amountReceived }
       );
@@ -242,7 +250,7 @@ const BookingDashboard = () => {
   const handlefinalCheckout = async (bookingId) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/bookings/finalCheckout/${bookingId}`
+        "https://www.indigaapi.atithikripa.com/api/bookings/finalCheckout/${bookingId}"
       );
 
       if (response.data.success) {
@@ -261,7 +269,7 @@ const BookingDashboard = () => {
   const handleCancelBooking = async (bookingId) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/bookings/${bookingId}/cancel`
+        "https://www.indigaapi.atithikripa.com/api/bookings/${bookingId}/cancel"
       );
       if (response.data.success) {
         showNotification("success", "Booking cancelled successfully");
