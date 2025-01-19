@@ -1,6 +1,8 @@
+// db.js
 require("dotenv").config();
 const mongoose = require("mongoose");
 
+<<<<<<< HEAD
 // Ensure DB_URL is provided in .env file
 const uri = process.env.DB_URL;
 
@@ -20,6 +22,18 @@ function connectToDb() {
       console.error("Error connecting to the database", err);
       process.exit(1); // Exit the process if the connection fails
     });
+=======
+const uri = process.env.DB_URL;
+
+function connectToDb() {
+  try {
+    mongoose.connect(uri);
+    console.log("Connected successfully to database");
+  } catch (err) {
+    console.error("Connection to database failed", err);
+    throw err;
+  }
+>>>>>>> parent of ba7152a (three subdomains configuration)
 }
 
 module.exports = connectToDb;

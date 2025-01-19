@@ -69,8 +69,6 @@ const BookingDashboard = () => {
     } catch (error) {
       console.error("Failed to fetch rooms:", error);
       showNotification("error", "Failed to fetch rooms");
-    } finally {
-      setLoading(false);
     }
   };
 
