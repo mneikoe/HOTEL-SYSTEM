@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { io } from "socket.io-client";
+import io from "socket.io-client";
 import { ArrowLeft } from "lucide-react";
 import { parse } from "date-fns"; // Using date-fns for date handling
 import { DownloadTableExcel } from "react-export-table-to-excel";

@@ -12,7 +12,6 @@ function connectToDb() {
     console.error("Connection to database failed", err);
     throw err;
   }
->>>>>>> parent of ba7152a (three subdomains configuration)
 }
 
 module.exports = connectToDb;
