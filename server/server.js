@@ -7,7 +7,11 @@ const Room = require("./models/Room");
 const Booking = require("./models/Booking");
 const bookingController = require("./controllers/bookingController");
 
-const PORT = process.env.PORT || 7001;
+const availablePorts = [7001, 7002, 7003, 7007, 7008];
+const PORT =
+  process.env.PORT ||
+  availablePorts[Math.floor(Math.random() * availablePorts.length)];
+console.log(`Server running on port ${PORT}`);
 
 const server = http.createServer(app);
 

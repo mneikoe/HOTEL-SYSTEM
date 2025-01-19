@@ -10,7 +10,7 @@ const receptionistRoutes = require("./routes/receptionistRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 
-const connectDB = require("./config/db");
+//const connectDB = require("./config/db");
 const connectToDb = require("./config/db");
 
 const app = express();
@@ -19,6 +19,11 @@ const allowedOrigins = [
   "https://kanha.atithikripa.com",
   "https://amulyashri.atithikripa.com",
 ];
+const dbConnections = {
+  "https://indiga.atithikripa.com": process.env.DB_URL_INDIGA,
+  "https://kanha.atithikripa.com": process.env.DB_URL_KANHA,
+  "https://amulyashri.atithikripa.com": process.env.DB_URL_AMULYASHRI,
+};
 
 app.use(
   cors({
@@ -37,13 +42,19 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 //connectDB();
+// Middleware to connect to the correct database based on the full subdomain URL
 app.use(async (req, res, next) => {
   try {
-    const host = req.headers.host; // Example: "kanha.atithikripa.com"
-    const subdomain = host.split(".")[0]; // Extract the subdomain (e.g., "kanha")
+    const fullUrl = req.headers.host; // Example: "indiga.atithikripa.com"
 
-    // Connect to the database for the subdomain
-    await connectToDb(subdomain);
+    // Check if the full URL exists in the dbConnections map
+    const uri = dbConnections[fullUrl];
+    if (!uri) {
+      throw new Error(`No database URL configured for subdomain: ${fullUrl}`);
+    }
+
+    // Connect to the database
+    await connectToDb(uri);
 
     next();
   } catch (error) {
@@ -51,7 +62,6 @@ app.use(async (req, res, next) => {
     res.status(500).send("Database connection error");
   }
 });
-
 app.use("/api/admin", adminRoutes);
 app.use("/api/managers", managerRoutes);
 app.use("/api/receptionists", receptionistRoutes);
