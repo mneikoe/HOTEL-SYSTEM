@@ -11,6 +11,7 @@ const roomRoutes = require("./routes/roomRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 
 const connectDB = require("./config/db");
+const connectToDb = require("./config/db");
 
 const app = express();
 const allowedOrigins = [
@@ -35,7 +36,21 @@ app.use(
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-connectDB();
+//connectDB();
+app.use(async (req, res, next) => {
+  try {
+    const host = req.headers.host; // Example: "kanha.atithikripa.com"
+    const subdomain = host.split(".")[0]; // Extract the subdomain (e.g., "kanha")
+
+    // Connect to the database for the subdomain
+    await connectToDb(subdomain);
+
+    next();
+  } catch (error) {
+    console.error("Failed to connect to the database", error);
+    res.status(500).send("Database connection error");
+  }
+});
 
 app.use("/api/admin", adminRoutes);
 app.use("/api/managers", managerRoutes);
