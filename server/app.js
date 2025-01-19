@@ -13,8 +13,25 @@ const bookingRoutes = require("./routes/bookingRoutes");
 const connectDB = require("./config/db");
 
 const app = express();
+const allowedOrigins = [
+  "https://indiga.atithikripa.com",
+  "https://kanha.atithikripa.com",
+  "https://amulyashri.atithikripa.com",
+];
 
-app.use(cors({ origin: "https://indiga.atithikripa.com", credentials: true }));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
@@ -25,8 +42,8 @@ app.use("/api/managers", managerRoutes);
 app.use("/api/receptionists", receptionistRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api", bookingRoutes);
-app.get('/', (req, res) => {
-    res.send('Welcome to the Backend API');
+app.get("/", (req, res) => {
+  res.send("Welcome to the Backend API");
 });
 
 module.exports = app;
