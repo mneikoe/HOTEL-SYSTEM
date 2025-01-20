@@ -8,8 +8,9 @@ import { parse } from "date-fns"; // Using date-fns for date handling
 import { DownloadTableExcel } from "react-export-table-to-excel";
 
 // Initialize Socket.IO
-const socket = io("https://www.indigaapi.atithikripa.com", {
-  withCredentials: true,
+const socket = io("https://www.indigaapi.atithikripa.com");
+socket.on("connect", () => {
+  console.log("WebSocket connected");
 });
 
 const BookingDashboard = () => {

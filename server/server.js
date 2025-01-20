@@ -1,6 +1,6 @@
 const app = require("./app");
 const http = require("http");
-const socketIo = require("socket.io");
+
 const Manager = require("./models/Manager");
 const Receptionist = require("./models/Receptionist");
 const Room = require("./models/Room");
@@ -9,12 +9,11 @@ const bookingController = require("./controllers/bookingController");
 
 const PORT = process.env.PORT || 7001;
 
-const server = http.createServer(app);
-
-const io = socketIo(server, {
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, {
   cors: {
     origin: "https://indiga.atithikripa.com",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
